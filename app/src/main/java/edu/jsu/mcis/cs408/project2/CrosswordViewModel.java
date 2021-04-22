@@ -139,11 +139,12 @@ public class CrosswordViewModel extends ViewModel {
 
                     // Append clue to StringBuilder buffer (clueAcrossBuffer or clueDownBuffer)
 
-                    /*
-
-                        INSERT YOUR CODE HERE
-
-                     */
+                    if(word.getDirection().toUpperCase().equals(Word.ACROSS)){
+                        clueAcrossBuffer.append(String.valueOf(word.getBox()) + ": " + word.getClue() + "\n");
+                    }
+                    else if(word.getDirection().toUpperCase().equals(Word.DOWN)){
+                        clueDownBuffer.append(String.valueOf(word.getBox()) + ": " + word.getClue() + "\n");
+                    }
 
                 }
                 else if (fields.length == WORD_HEADER_FIELDS) {
