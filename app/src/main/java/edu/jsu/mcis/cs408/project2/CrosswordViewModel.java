@@ -86,17 +86,22 @@ public class CrosswordViewModel extends ViewModel {
         int column = word.getColumn();
         int box = word.getBox();
 
+
         // Place box number into Numbers array
 
         numbers.getValue()[row][column] = box;
 
         // Place word letters into Letters array
 
-        /*
-
-            INSERT YOUR CODE HERE
-
-         */
+        for (int i = 0; i < word.getWord().length(); ++i){
+            letters.getValue() [row][ column] = BLANK_CHAR;
+            if(word.getDirection().equals(Word.DOWN)){
+                ++row;
+            }
+            else if(word.getDirection().equals(Word.ACROSS)){
+                ++column;
+            }
+        }
 
     }
 
