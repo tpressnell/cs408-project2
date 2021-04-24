@@ -105,6 +105,15 @@ public class CrosswordViewModel extends ViewModel {
 
     }
 
+    public int getNumber(int row, int column){
+        return numbers.getValue() [row][column];
+    }
+
+    public String getWord(int number, String direction){
+        String key = String.valueOf(number) + direction;
+        return words.getValue().get(key).getWord();
+    }
+
     // Add All Words to Grid (for testing only!)
 
     private void addAllWordsToGrid() {

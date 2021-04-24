@@ -1,5 +1,7 @@
 package edu.jsu.mcis.cs408.project2;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -8,11 +10,13 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +36,7 @@ public class PuzzleFragment extends Fragment implements TabFragment {
     private View root;
     private ConstraintLayout layout;
     private ConstraintSet set;
+    private String userInput;
 
     public PuzzleFragment() {
         // Required empty public constructor
@@ -86,6 +91,27 @@ public class PuzzleFragment extends Fragment implements TabFragment {
         return root;
 
     }
+
+
+    AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+    builder.setTitle(R.string.dialog_title);
+    builder.setMessage(R.string.dialog_message);
+    final EditText input = new EditText(this);
+    input.setInputType(InputType.TYPE_CLASS_TEXT);
+    builder.setView(input);
+    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface d, int i) {
+            userInput= input.getText().toString();
+        }
+    });
+    builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+        @Override public void onClick(DialogInterface d, int i) {
+            userInput= "";
+            d.cancel();
+        }
+    });
+    AlertDialog aboutDialog= builder.show();
 
     public void onClick(View v) {
 
