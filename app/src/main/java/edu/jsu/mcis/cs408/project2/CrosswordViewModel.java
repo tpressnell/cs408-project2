@@ -32,6 +32,8 @@ public class CrosswordViewModel extends ViewModel {
     private final MutableLiveData<String> cluesAcross = new MutableLiveData<String>();
     private final MutableLiveData<String> cluesDown = new MutableLiveData<String>();
 
+    private boolean gameOver;
+
     // Initialize Shared Model
 
     public void init(Context context) {
@@ -94,7 +96,38 @@ public class CrosswordViewModel extends ViewModel {
         // Place word letters into Letters array
 
         for (int i = 0; i < word.getWord().length(); ++i){
-            letters.getValue() [row][ column] = BLANK_CHAR;
+            letters.getValue() [row][ column] = word.getWord().charAt(i);
+            if(word.getDirection().equals(Word.DOWN)){
+                ++row;
+            }
+            else if(word.getDirection().equals(Word.ACROSS)){
+                ++column;
+            }
+        }
+
+    }
+
+    public void addWordToPuzzle(String key) {
+
+        // Get Word from collection (look up using the given key)
+
+        Word word = words.getValue().get(key);
+
+        // Get Word Properties
+
+        int row = word.getRow();
+        int column = word.getColumn();
+        int box = word.getBox();
+
+
+        // Place box number into Numbers array
+
+        numbers.getValue()[row][column] = box;
+
+        // Place word letters into Letters array
+
+        for (int i = 0; i < word.getWord().length(); ++i){
+            letters.getValue() [row][ column] = word.getWord().charAt(i);
             if(word.getDirection().equals(Word.DOWN)){
                 ++row;
             }
@@ -111,7 +144,28 @@ public class CrosswordViewModel extends ViewModel {
 
     public String getWord(int number, String direction){
         String key = String.valueOf(number) + direction;
-        return words.getValue().get(key).getWord();
+        if(words.getValue().get(key) != null){
+            return words.getValue().get(key).getWord();
+        }
+        else {
+            return null;
+        }
+    }
+
+    public boolean isGameOver(){
+        gameOver = true;
+        for(int i = 0; i < letters.getValue().length; ++i){
+            for(int j = 0; j < letters.getValue()[i].length; ++j){
+                if(letters.getValue()[i][j] == BLANK_CHAR){
+                    System.out.println("ENDGAME NOT TRIGGERED");
+                    gameOver = false;
+                    break;
+                }
+            }
+        }
+        System.out.println("GAME OVER BOOLEAN: " + gameOver);
+
+        return gameOver;
     }
 
     // Add All Words to Grid (for testing only!)

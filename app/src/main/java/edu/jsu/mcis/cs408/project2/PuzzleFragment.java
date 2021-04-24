@@ -93,25 +93,7 @@ public class PuzzleFragment extends Fragment implements TabFragment {
     }
 
 
-    AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
-    builder.setTitle(R.string.dialog_title);
-    builder.setMessage(R.string.dialog_message);
-    final EditText input = new EditText(this);
-    input.setInputType(InputType.TYPE_CLASS_TEXT);
-    builder.setView(input);
-    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface d, int i) {
-            userInput= input.getText().toString();
-        }
-    });
-    builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-        @Override public void onClick(DialogInterface d, int i) {
-            userInput= "";
-            d.cancel();
-        }
-    });
-    AlertDialog aboutDialog= builder.show();
+
 
     public void onClick(View v) {
 
@@ -120,11 +102,52 @@ public class PuzzleFragment extends Fragment implements TabFragment {
         String[] fields = v.getTag().toString().trim().split(",");
         int row = Integer.parseInt(fields[0]);
         int col = Integer.parseInt(fields[1]);
+        int box = model.getNumber(row, col);
 
         // Display Toast
 
         String message = row + "/" + col;
         Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+        builder.setTitle(R.string.dialog_title);
+        builder.setMessage(R.string.dialog_message);
+        final EditText input = new EditText(this.getContext());
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface d, int i) {
+                userInput= input.getText().toString().toUpperCase();
+
+                String wordAcross = model.getWord(box,"A");
+                String wordDown = model.getWord(box,"D");
+
+                System.out.println("WORD ACROSS " + wordAcross);
+                System.out.println("WORD DOWN " + wordDown);
+                System.out.println("USER INPUT " + userInput);
+
+                if(userInput.equals(wordAcross)){
+                    model.addWordToPuzzle(String.valueOf(box) + "A");
+                    updateGrid();
+                    System.out.println("WORD SHOULD BE ADDED TO PUZZLE");
+                }
+                if(userInput.equals(wordDown)){
+                    model.addWordToPuzzle(String.valueOf(box) + "D");
+                    updateGrid();
+                    System.out.println("WORD SHOULD BE ADDED TO PUZZLE");
+                }
+            }
+        });
+        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override public void onClick(DialogInterface d, int i) {
+                userInput= "";
+                d.cancel();
+            }
+        });
+        AlertDialog aboutDialog= builder.show();
 
     }
 
@@ -225,6 +248,13 @@ public class PuzzleFragment extends Fragment implements TabFragment {
                 }
             }
         }
+
+        if(model.isGameOver()){
+            Toast toast = Toast.makeText(getActivity(), "You have completed the game! Thanks for playing!", Toast.LENGTH_LONG);
+            toast.show();
+            System.out.println("TOAST SHOULD BE TRIGGERED");
+        }
+
 
     }
 
