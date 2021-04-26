@@ -96,7 +96,7 @@ public class CrosswordViewModel extends ViewModel {
         // Place word letters into Letters array
 
         for (int i = 0; i < word.getWord().length(); ++i){
-            letters.getValue() [row][ column] = word.getWord().charAt(i);
+            letters.getValue() [row][ column] = BLANK_CHAR;
             if(word.getDirection().equals(Word.DOWN)){
                 ++row;
             }
@@ -157,13 +157,12 @@ public class CrosswordViewModel extends ViewModel {
         for(int i = 0; i < letters.getValue().length; ++i){
             for(int j = 0; j < letters.getValue()[i].length; ++j){
                 if(letters.getValue()[i][j] == BLANK_CHAR){
-                    System.out.println("ENDGAME NOT TRIGGERED");
                     gameOver = false;
                     break;
                 }
             }
         }
-        System.out.println("GAME OVER BOOLEAN: " + gameOver);
+
 
         return gameOver;
     }

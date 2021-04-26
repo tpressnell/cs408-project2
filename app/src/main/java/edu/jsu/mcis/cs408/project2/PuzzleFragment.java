@@ -125,19 +125,13 @@ public class PuzzleFragment extends Fragment implements TabFragment {
                 String wordAcross = model.getWord(box,"A");
                 String wordDown = model.getWord(box,"D");
 
-                System.out.println("WORD ACROSS " + wordAcross);
-                System.out.println("WORD DOWN " + wordDown);
-                System.out.println("USER INPUT " + userInput);
-
                 if(userInput.equals(wordAcross)){
                     model.addWordToPuzzle(String.valueOf(box) + "A");
                     updateGrid();
-                    System.out.println("WORD SHOULD BE ADDED TO PUZZLE");
                 }
                 if(userInput.equals(wordDown)){
                     model.addWordToPuzzle(String.valueOf(box) + "D");
                     updateGrid();
-                    System.out.println("WORD SHOULD BE ADDED TO PUZZLE");
                 }
             }
         });
@@ -148,6 +142,11 @@ public class PuzzleFragment extends Fragment implements TabFragment {
             }
         });
         AlertDialog aboutDialog= builder.show();
+
+        // Check for game over, display toast if gme is over
+        if(model.isGameOver()){
+            Toast.makeText(getActivity(), "You have completed the game! Thanks for playing!", Toast.LENGTH_LONG).show();
+        }
 
     }
 
@@ -249,11 +248,7 @@ public class PuzzleFragment extends Fragment implements TabFragment {
             }
         }
 
-        if(model.isGameOver()){
-            Toast toast = Toast.makeText(getActivity(), "You have completed the game! Thanks for playing!", Toast.LENGTH_LONG);
-            toast.show();
-            System.out.println("TOAST SHOULD BE TRIGGERED");
-        }
+
 
 
     }
